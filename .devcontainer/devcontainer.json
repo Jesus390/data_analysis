@@ -1,0 +1,35 @@
+{
+  "name": "Data Engineering ETL/ELT Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true,
+      "installZsh": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.terminal.activateEnvInSelectedTerminal": true,
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "tamasfe.even-better-toml",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "forwardPorts": [],
+  // Comando para instalar dependencias automáticamente al construir el entorno
+  "postCreateCommand": "pip install --no-cache-dir -r requirements.txt",
+  "shutdownAction": "stopContainer",
+  "remoteUser": "vscode"
+}
