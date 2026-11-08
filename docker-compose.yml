@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: konecta_postgres_db
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: konecta_dw
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - konecta-net
+
+  app:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: konecta_dev_app
+    volumes:
+      - .:/workspaces:cached
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=konecta_dw
+      - DB_USER=postgres_user
+      - DB_PASSWORD=postgres_password
+    command: sleep infinity
+    networks:
+      - konecta-net
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
+
+networks:
+  konecta-net:
+    driver: bridge
